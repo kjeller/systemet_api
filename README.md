@@ -1,5 +1,6 @@
 # systemet_api
-Anpassat till systembolagets api, läser .csv filer.
+Programmet är anpassat till systembolagets api. Det läser av upp till hundra varor från .csv fil. Dynamisk minneshantering gör detta möjligt.
+
 Skaparna av programmet:
 Erik Börne  
 Karl Strålman 
