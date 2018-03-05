@@ -6,14 +6,47 @@
 #include "funktioner.h"
 
 /* Skriver ut strängen utan \n */
-void str_scan(char *dest, int max_length) {
+int str_scan(char *dest, int max_length) {
   char * c_temp = malloc(max_length * sizeof(char));
   fflush(stdin);
   fgets(c_temp, (max_length-1), stdin);
   strtok(c_temp, "\n");
   strcat(c_temp,"\0");
+  // Kollar ifall längdsträngen är större än 1
+  if(!(strlen(c_temp)-1)) {
+    free(c_temp);
+    return 1;
+  }
   strcpy(dest, c_temp);
   free(c_temp);
+  return 0;
+}
+
+static int str_is_num(char *string, unsigned char size) {
+  char *s, c;
+  s = string; c = 0;
+
+  // Kolla alla tecken i strängen
+  while(c++, *s++) {
+    if(c >= size) {
+      printf("Ange ett giltigt tal:");
+      fflush(stdin);
+      return 1;
+    }
+    // När man når \n har strängen nått sitt slut
+    if(*s == '\n') {
+      break;
+    }
+    // Om det är ett nummer fortsätt till nästa
+    if(isdigit(*s)) {
+      continue;
+    } else {
+      printf("Ange ett giltigt tal:");
+      fflush(stdin);
+      return 1;
+    }
+  }
+  return 0;
 }
 
 /*
@@ -33,39 +66,60 @@ int add_article(item **ptr, int size) {
 
     char * c_temp = malloc(100 * sizeof(char)); // Temporär char fält som används för inmatning med fgets
 
+    // Clear buff
     printf("Enter ID: ");
+    do {
     fgets(c_temp, 100, stdin);
-    sscanf(c_temp, "%d", &((*ptr+size)->varunummer));
+  }while(str_is_num(c_temp, 7));
+    sscanf(c_temp, "%d", &(*ptr+size)->varunummer);
 
     printf("Enter Name: ");
-    str_scan((*ptr+size)->namn, MAX_SIZE);
+    while(str_scan((*ptr+size)->namn, MAX_SIZE)) {
+      printf("Vänligen mata in och försök igen.");
+    }
 
     printf("Enter Price (kr): ");
+    do {
     fgets(c_temp, 100, stdin);
+    }while(str_is_num(c_temp, 7));
     sscanf(c_temp, "%f", &(*ptr+size)->pris);
 
     printf("Enter Volym (ml): ");
+    do {
     fgets(c_temp, 100, stdin);
+    }while(str_is_num(c_temp, 7));
     sscanf(c_temp, "%f", &(*ptr+size)->volym);
 
     printf("Enter Style: ");
-    str_scan((*ptr+size)->stil, MAX_SIZE);
+    while(str_scan((*ptr+size)->stil, MAX_SIZE)) {
+      printf("Vänligen mata in och försök igen.");
+    }
 
     printf("Enter Type: ");
-    str_scan((*ptr+size)->typ, MAX_SIZE);
+    while(str_scan((*ptr+size)->typ, MAX_SIZE)) {
+      printf("Vänligen mata in och försök igen.");
+    }
 
     printf("Enter Pack: ");
-    str_scan((*ptr+size)->forpackning, MAX_SIZE);
+    while(str_scan((*ptr+size)->forpackning, MAX_SIZE)) {
+      printf("Vänligen mata in och försök igen.");
+    }
 
     printf("Enter Country: ");
-    str_scan((*ptr+size)->land, MAX_SIZE);
+    while(str_scan((*ptr+size)->land, MAX_SIZE)) {
+      printf("Vänligen mata in och försök igen.");
+    }
 
     printf("Enter Producer: ");
-    str_scan((*ptr+size)->producent, MAX_SIZE);
+    while(str_scan((*ptr+size)->producent, MAX_SIZE)) {
+      printf("Vänligen mata in och försök igen.");
+    }
 
     printf("Enter alcohol%%: ");
+    do {
     fgets(c_temp, 100, stdin);
-    sscanf(c_temp, "%f", &(*ptr+size)->alkoholhalt);
+    }while(str_is_num(c_temp, 7));
+    sscanf(c_temp, "%f", &(*ptr+size)->alkoholhalt);;
 
     free(c_temp);
     size++;
